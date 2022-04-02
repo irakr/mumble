@@ -568,7 +568,8 @@ void ServerHandler::sendPingInternal() {
 
 	quint64 t = tTimestamp.elapsed();
 
-	if (qusUdp) {
+	const bool forcedTcp = NetworkConfig::TcpModeEnabled() || !bUdp;
+	if (qusUdp && !forcedTcp) {
 		Mumble::Protocol::PingData pingData;
 		pingData.timestamp                    = t;
 		pingData.requestAdditionalInformation = false;
