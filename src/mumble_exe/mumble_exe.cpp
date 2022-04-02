@@ -180,6 +180,16 @@ int main(int argc, char **argv) {
 #endif // DEBUG
 
 int APIENTRY wWinMain(HINSTANCE instance, HINSTANCE prevInstance, wchar_t *cmdArg, int cmdShow) {
+
+#ifdef DEBUG
+	/* Attach a console for stdout and stdin. */
+	if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
+		if (!AllocConsole())
+			return -1;
+	}
+#endif
+
+
 	if (!ConfigureEnvironment()) {
 		Alert(L"Mumble Launcher Error -1", L"Unable to configure environment.");
 		return -1;
