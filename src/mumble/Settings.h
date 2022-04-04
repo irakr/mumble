@@ -431,10 +431,13 @@ struct Settings {
 	QByteArray qbaPTTButtonWindowGeometry = {};
 
 	// Network settings
-	bool bTCPCompat   = false;
-	bool bReconnect   = true;
-	bool bAutoConnect = false;
-	bool bQoS         = true;
+	bool bTCPCompat               = false;
+	bool useUdpForInboundStreams  = false;
+	bool useUdpForOutboundStreams = false;
+	bool useUdpForBothStreams     = true;
+	bool bReconnect               = true;
+	bool bAutoConnect             = false;
+	bool bQoS                     = true;
 	/// Disables the "Public Internet" section in the connect dialog if set.
 	bool bDisablePublicList    = false;
 	ProxyType ptProxyType      = NoProxy;

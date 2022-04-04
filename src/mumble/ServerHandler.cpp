@@ -295,9 +295,11 @@ void ServerHandler::sendMessage(const unsigned char *data, int len, bool force) 
 	if (!connection || !connection->csCrypt->isValid())
 		return;
 
+	printf("IRAK: sendMessage(force=%d)\n", force);
 	if (!force && (NetworkConfig::TcpModeEnabled() || !bUdp)) {
 		QByteArray qba;
 
+		printf("IRAK: sendMessage(): Sending TCP.\n");
 		qba.resize(len + 6);
 		unsigned char *uc = reinterpret_cast< unsigned char * >(qba.data());
 		*reinterpret_cast< quint16 * >(&uc[0]) =
@@ -308,6 +310,7 @@ void ServerHandler::sendMessage(const unsigned char *data, int len, bool force) 
 		QApplication::postEvent(this,
 								new ServerHandlerMessageEvent(qba, Mumble::Protocol::TCPMessageType::UDPTunnel, true));
 	} else {
+		printf("IRAK: sendMessage(): Sending UDP.\n");
 		if (!connection->csCrypt->encrypt(reinterpret_cast< const unsigned char * >(data), crypto, len)) {
 			return;
 		}
@@ -569,6 +572,7 @@ void ServerHandler::sendPingInternal() {
 	quint64 t = tTimestamp.elapsed();
 
 	const bool forcedTcp = NetworkConfig::TcpModeEnabled() || !bUdp;
+	printf("IRAK: sendPingInternal(): qusUdp: 0x%llx, forcedTcp: %d\n", quintptr(qusUdp), forcedTcp);
 	if (qusUdp && !forcedTcp) {
 		Mumble::Protocol::PingData pingData;
 		pingData.timestamp                    = t;

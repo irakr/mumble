@@ -1,3 +1,4 @@
+#include "ConfigWidget.h"
 // Copyright 2009-2022 The Mumble Developers. All rights reserved.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file at the root of the
@@ -57,6 +58,16 @@ void ConfigWidget::loadCheckBox(QAbstractButton *c, bool v) {
 		connect(this, SIGNAL(intSignal(int)), c, SIGNAL(stateChanged(int)));
 		emit intSignal(v ? 1 : 0);
 		disconnect(SIGNAL(intSignal(int)));
+	}
+}
+
+void ConfigWidget::loadRadioButton(QAbstractButton *c, bool v) {
+	if (v != c->isChecked()) {
+		c->setChecked(v);
+	} else {
+		connect(this, SIGNAL(boolSignal(bool)), c, SIGNAL(toggled(bool)));
+		emit boolSignal(v);
+		disconnect(SIGNAL(boolSignal(bool)));
 	}
 }
 

@@ -1,3 +1,4 @@
+#include "NetworkConfig.h"
 // Copyright 2008-2022 The Mumble Developers. All rights reserved.
 // Use of this source code is governed by a BSD-style license
 // that can be found in the LICENSE file at the root of the
@@ -34,6 +35,8 @@ NetworkConfig::NetworkConfig(Settings &st) : ConfigWidget(st) {
 	qlePort->setAccessibleName(tr("Port"));
 	qleUsername->setAccessibleName(tr("Username"));
 	qlePassword->setAccessibleName(tr("Password"));
+
+	connect(qcbTcpMode, SIGNAL(stateChanged(int)), this, SIGNAL(on_qcbTcpMode_stateChanged(int)));
 }
 
 QString NetworkConfig::title() const {
@@ -50,6 +53,10 @@ QIcon NetworkConfig::icon() const {
 
 void NetworkConfig::load(const Settings &r) {
 	loadCheckBox(qcbTcpMode, s.bTCPCompat);
+	loadRadioButton(qrbUdpIn, s.useUdpForInboundStreams);
+	loadRadioButton(qrbUdpOut, s.useUdpForOutboundStreams);
+	loadRadioButton(qrbUdpBoth, s.useUdpForBothStreams);
+	qgbUdpMode->setDisabled(s.bTCPCompat);
 	loadCheckBox(qcbQoS, s.bQoS);
 	loadCheckBox(qcbAutoReconnect, s.bReconnect);
 	loadCheckBox(qcbAutoConnect, s.bAutoConnect);
@@ -79,7 +86,12 @@ void NetworkConfig::load(const Settings &r) {
 }
 
 void NetworkConfig::save() const {
-	s.bTCPCompat         = qcbTcpMode->isChecked();
+	s.bTCPCompat               = qcbTcpMode->isChecked();
+	s.useUdpForInboundStreams  = qrbUdpIn->isChecked();
+	s.useUdpForOutboundStreams = qrbUdpOut->isChecked();
+	s.useUdpForBothStreams     = qrbUdpBoth->isChecked();
+	qgbUdpMode->setDisabled(s.bTCPCompat);
+	printf("bTCPCompat: %d, useUdpForInboundStreams: %d, useUdpForOutboundStreams: %d, useUdpForBothStreams: %d\n", s.bTCPCompat, s.useUdpForInboundStreams, s.useUdpForOutboundStreams, s.useUdpForBothStreams);
 	s.bQoS               = qcbQoS->isChecked();
 	s.bReconnect         = qcbAutoReconnect->isChecked();
 	s.bAutoConnect       = qcbAutoConnect->isChecked();
@@ -141,6 +153,11 @@ bool NetworkConfig::TcpModeEnabled() {
 	return Global::get().s.ptProxyType != Settings::NoProxy || Global::get().s.bTCPCompat;
 }
 
+bool NetworkConfig::mustSendUdp() {
+	Settings s = Global::get().s;
+	return (s.useUdpForOutboundStreams || s.useUdpForBothStreams) && !TcpModeEnabled();
+}
+
 void NetworkConfig::accept() const {
 	NetworkConfig::SetupProxy();
 }
@@ -153,8 +170,13 @@ void NetworkConfig::on_qcbType_currentIndexChanged(int v) {
 	qleUsername->setEnabled(pt != Settings::NoProxy);
 	qlePassword->setEnabled(pt != Settings::NoProxy);
 	qcbTcpMode->setEnabled(pt == Settings::NoProxy);
+	// qcbUdpMode->setEnabled(true); // This is to enable the button(not checked/unchecked). Default mode is UDP
 
 	s.ptProxyType = pt;
+}
+
+void NetworkConfig::on_qcbTcpMode_stateChanged(int v) {
+	qgbUdpMode->setDisabled((v == 0) ? false : true);
 }
 
 #ifdef NO_UPDATE_CHECK

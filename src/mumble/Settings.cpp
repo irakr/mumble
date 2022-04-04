@@ -749,6 +749,7 @@ void Settings::legacyLoad(const QString &path) {
 	std::unique_ptr< QSettings > settings_ptr;
 	QSettings::Format format = QSettings::IniFormat;
 
+	printf("IRAK: legacyLoad(%s)\n", path.toLocal8Bit().data());
 #ifdef Q_OS_WINDOWS
 	if (path == QLatin1String(REGISTRY_ID)) {
 		// Search the registry
@@ -757,7 +758,8 @@ void Settings::legacyLoad(const QString &path) {
 #endif
 		settings_ptr = std::make_unique< QSettings >(path.isEmpty() ? findSettingsLocation(true) : path, format);
 
-
+	printf("IRAK: legacyLoad(%s): settings_ptr->fileName(): %s\nsettings_ptr->format(): %d\n", path.toLocal8Bit().data(),
+		settings_ptr->fileName().toLocal8Bit().data(), settings_ptr->format());
 	LOAD(qsDatabaseLocation, "databaselocation");
 
 	LOAD(bMute, "audio/mute");
@@ -899,6 +901,9 @@ void Settings::legacyLoad(const QString &path) {
 
 	// Network settings
 	LOAD(bTCPCompat, "net/tcponly");
+	LOAD(useUdpForInboundStreams, "net/udpin");
+	LOAD(useUdpForOutboundStreams, "net/udpout");
+	LOAD(useUdpForBothStreams, "net/udpboth");
 	LOAD(bQoS, "net/qos");
 	LOAD(bReconnect, "net/reconnect");
 	LOAD(bAutoConnect, "net/autoconnect");

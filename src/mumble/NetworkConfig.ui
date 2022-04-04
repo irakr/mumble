@@ -39,6 +39,57 @@
         </property>
        </widget>
       </item>
+      
+      <item>
+       <widget class="QGroupBox" name="qgbUdpMode">
+        <property name="title">
+         <string>UDP audio stream mode</string>
+        </property>
+        <layout class="QHBoxLayout">
+         <item>
+          <widget class="QRadioButton" name="qrbUdpIn">
+           <property name="toolTip">
+            <string>Enable UDP for inbound audio stream only.</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;b&gt;Enable UDP for inbound audio stream only.&lt;</string>
+           </property>
+           <property name="text">
+            <string>Inbound only</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="qrbUdpOut">
+           <property name="toolTip">
+            <string>Enable UDP for outbound audio stream only.</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;b&gt;Enable UDP for outbound audio stream only.&lt;</string>
+           </property>
+           <property name="text">
+            <string>Outbound only</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="qrbUdpBoth">
+           <property name="toolTip">
+            <string>Enable UDP for both inbound and outbound audio stream.</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;b&gt;Enable UDP for both inbound and outbound audio stream.&lt;</string>
+           </property>
+           <property name="text">
+            <string>Both</string>
+           </property>
+          </widget>
+         </item>
+          
+        </layout>
+       </widget>
+      </item>
+      
       <item>
        <widget class="QCheckBox" name="qcbQoS">
         <property name="toolTip">

@@ -76,6 +76,9 @@
 	PROCESS(network, JITTER_BUFFER_SIZE_KEY, iJitterBufferSize)              \
 	PROCESS(network, FRAMES_PER_PACKET_KEY, iFramesPerPacket)                \
 	PROCESS(network, RESTRICT_TO_TCP_KEY, bTCPCompat)                        \
+	PROCESS(network, USE_UDP_INBOUND_STREAM_KEY, useUdpForInboundStreams)    \
+	PROCESS(network, USE_UDP_OUTBOUND_STREAM_KEY, useUdpForOutboundStreams)  \
+	PROCESS(network, USE_UDP_BOTH_STREAM_KEY, useUdpForBothStreams)          \
 	PROCESS(network, USE_QUALITY_OF_SERVICE_KEY, bQoS)                       \
 	PROCESS(network, AUTO_RECONNECT_KEY, bReconnect)                         \
 	PROCESS(network, AUTO_CONNECT_LAST_SERVER_KEY, bAutoConnect)             \

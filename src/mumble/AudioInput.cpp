@@ -1226,9 +1226,11 @@ void AudioInput::encodeAudioFrame(AudioChunk chunk) {
 }
 
 static void sendAudioFrame(gsl::span< const Mumble::Protocol::byte > encodedPacket) {
+	Settings s          = Global::get().s;
 	ServerHandlerPtr sh = Global::get().sh;
 	if (sh) {
-		sh->sendMessage(encodedPacket.data(), encodedPacket.size());
+		printf("IRAK: sendAudioFrame(): Sending audio frame.\n");
+		sh->sendMessage(encodedPacket.data(), encodedPacket.size(), NetworkConfig::mustSendUdp() ? true : false);
 	}
 }
 

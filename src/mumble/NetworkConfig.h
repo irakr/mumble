@@ -26,12 +26,14 @@ public:
 	virtual QIcon icon() const Q_DECL_OVERRIDE;
 	static void SetupProxy();
 	static bool TcpModeEnabled();
+	static bool mustSendUdp();
 public slots:
 	void accept() const Q_DECL_OVERRIDE;
 	void save() const Q_DECL_OVERRIDE;
 	void load(const Settings &r) Q_DECL_OVERRIDE;
 
 	void on_qcbType_currentIndexChanged(int v);
+	void on_qcbTcpMode_stateChanged(int v);
 #ifdef NO_UPDATE_CHECK
 	void on_qcbAutoUpdate_stateChanged(int state);
 #endif
